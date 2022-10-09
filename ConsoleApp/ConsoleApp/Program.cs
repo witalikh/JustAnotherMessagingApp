@@ -5,11 +5,11 @@ using Faker;
 
 static class Connection
 {
-    private const string Server = "db.aqdvoysmvmtrcojhsesf.supabase.co";
-    private const string Port = "5432";
-    private const string User = "postgres";
-    private const string Password = "1909aszx2103ss";
-    private const string Database = "postgres";
+    private const string Server = "db.aq.co";
+    private const string Port = "";
+    private const string User = "";
+    private const string Password = "";
+    private const string Database = "";
     
     public static string ConnectionString = $"Server={Server}; Port={Port}; User Id={User}; Password={Password}; Database={Database}";
 }
