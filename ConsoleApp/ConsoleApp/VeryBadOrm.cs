@@ -13,7 +13,7 @@ namespace VeryBadOrm
 
 			using var cmd = new NpgsqlCommand(
 				"INSERT into users(username, email , password, first_name, last_name, phone_number)" +
-				"VALUES (($1), ($2), ($3), ($4), ($5), ($6))",
+				"VALUES (($1), ($2), ($3), ($4), ($5), ($6)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters =
@@ -44,7 +44,7 @@ namespace VeryBadOrm
 				"name, description, owner_id, " +
 				"visibility, default_write_messages, default_invite_persons, " +
 				"default_send_files, join_link) " +
-				"VALUES (($1), ($2), ($3), ($4)::chat_visibility, ($5), ($6), ($7), ($8))",
+				"VALUES (($1), ($2), ($3), ($4)::chat_visibility, ($5), ($6), ($7), ($8)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -75,7 +75,7 @@ namespace VeryBadOrm
 				"INSERT into roles(" +
 				"name, chat_id, can_write_messages, " +
 				"can_invite_people, can_send_files, can_approve_join_requests)" +
-				"VALUES (($1), ($2), ($3), ($4), ($5), ($6))",
+				"VALUES (($1), ($2), ($3), ($4), ($5), ($6)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -102,7 +102,7 @@ namespace VeryBadOrm
 			using var cmd = new NpgsqlCommand(
 				"INSERT into user_blacklists(" +
 				"user_id, user_blacklisted_id)" +
-				"VALUES (($1), ($2))",
+				"VALUES (($1), ($2)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -125,7 +125,7 @@ namespace VeryBadOrm
 			using var cmd = new NpgsqlCommand(
 				"INSERT into chat_blacklists(" +
 				"chat_id, user_id)" +
-				"VALUES (($1), ($2))",
+				"VALUES (($1), ($2)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -149,7 +149,7 @@ namespace VeryBadOrm
 			using var cmd = new NpgsqlCommand(
 				"INSERT into chat_invitations(" +
 				"chat_id, user_id, status, invited_by)" +
-				"VALUES (($1), ($2), ($3)::join_status, ($4))",
+				"VALUES (($1), ($2), ($3)::join_status, ($4)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -175,7 +175,7 @@ namespace VeryBadOrm
 			using var cmd = new NpgsqlCommand(
 				"INSERT into chat_join_requests(" +
 				"chat_id, user_id, status, approved_by)" +
-				"VALUES (($1), ($2), ($3)::join_status, ($4))",
+				"VALUES (($1), ($2), ($3)::join_status, ($4)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -200,7 +200,7 @@ namespace VeryBadOrm
 			using var cmd = new NpgsqlCommand(
 				"INSERT into chat_members(" +
 				"chat_id, user_id, role_id) " +
-				"VALUES (($1), ($2), ($3))",
+				"VALUES (($1), ($2), ($3)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -224,7 +224,7 @@ namespace VeryBadOrm
 			using var cmd = new NpgsqlCommand(
 				"INSERT into messages(" +
 				"chat_id, member_id, status, payload, has_additional_context)" +
-				"VALUES (($1), ($2), ($3)::\"messageStatus\", ($4), ($5))",
+				"VALUES (($1), ($2), ($3)::\"messageStatus\", ($4), ($5)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -250,7 +250,7 @@ namespace VeryBadOrm
 			using var cmd = new NpgsqlCommand(
 				"INSERT into additional_context(" +
 				"message_id, type, payload)" +
-				"VALUES (($1), ($2), ($3))",
+				"VALUES (($1), ($2), ($3)) " + "ON CONFLICT DO NOTHING",
 				npgsqlConnection)
 			{
 				Parameters = {
@@ -265,17 +265,18 @@ namespace VeryBadOrm
 
 		public static void CreateRandomData()
 		{
-			for (int i = 0; i < 10; i++)
+			for (int i = 0; i < 40; i++)
 			{
-				/* AwfulOrm.CreateUser(); */
-				/* AwfulOrm.CreateChat(); */
-				/* AwfulOrm.CreateRole(); */
-				/* AwfulOrm.CreateChatBlackList(); */
-				/* AwfulOrm.CreateChatMember(); */
-				/* AwfulOrm.CreateChatInvitation(); */
-				/* AwfulOrm.CreateChatJoinRequest(); */
-				/* AwfulOrm.CreateMessages(); */
-				/* AwfulOrm.CreateAdditionalContext(); */
+				// AwfulOrm.CreateUser();
+				// AwfulOrm.CreateChatMember();
+				// AwfulOrm.CreateChat();
+				// AwfulOrm.CreateRole();
+				// AwfulOrm.CreateChatBlackList();
+				// AwfulOrm.CreateChatInvitation();
+				// AwfulOrm.CreateChatJoinRequest();
+				// AwfulOrm.CreateMessages();
+				// AwfulOrm.CreateAdditionalContext();
+				// AwfulOrm.CreateUserBlackList();
 			}
 		}
 

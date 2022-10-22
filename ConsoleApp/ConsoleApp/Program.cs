@@ -30,13 +30,16 @@ static class Program
 {
     public static void Main(string[] args)
     {
-        Connect(args[0]);
+        Connect(args.Length > 0 ? args[0] : "");
     }
 
 
     public static void Connect(string tableName)
     {
 		AwfulOrm.CreateRandomData();
-		AwfulOrm.ReadData(tableName);
+		if (tableName != "")
+		{
+			AwfulOrm.ReadData(tableName);
+		}
     }
 }
