@@ -1,4 +1,4 @@
-using MessangerApp.Models.Chats;
+using MessangerApp.Entities.Chats;
 
 namespace MessangerApp.DataAccess.Chats.Interfaces;
 

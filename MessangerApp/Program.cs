@@ -1,90 +1,12 @@
-using Microsoft.EntityFrameworkCore;
-using BCryptNet = BCrypt.Net.BCrypt;
+using MessangerApp.Application;
 
+namespace MessangerApp;
 
-using MessangerApp.DataAccess.Users;
-using MessangerApp.DataAccess.BlackListedTokens;
-
-using MessangerApp.Authorization;
-using MessangerApp.Helpers.Users;
-using MessangerApp.Models.Users;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
+public class Program
 {
-    builder.Services.AddCors();
-    builder.Services.AddControllers();
-    // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
-
-    builder.Services.AddAutoMapper(typeof(Program));
-
-    builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-
-    builder.Services.AddDbContext<UserPostgreSqlContext>(
-        options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-    builder.Services.AddScoped<IJwtUtils, JwtUtils>();
-    builder.Services.AddScoped<IUserDataAccessProvider, UserDataAccessProvider>();
-
-    builder.Services.AddDbContext<BlackListedTokenPostgreSqlContext>(
-        options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-    builder.Services.AddScoped<IBlackListedTokenService, BlackListedTokenService>();
+	static void Main(string[] args)
+	{
+		var app = new App(args);
+		app.Run();
+	}
 }
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-// migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
-{
-    var userDataContext = scope.ServiceProvider.GetRequiredService<UserPostgreSqlContext>();    
-    userDataContext.Database.Migrate();
-}
-
-// configure HTTP request pipeline
-{
-    // global cors policy
-    app.UseCors(x => x
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
-
-    // global error handler
-    app.UseMiddleware<ErrorHandlerMiddleware>();
-
-    // custom jwt auth middleware
-    app.UseMiddleware<JwtMiddleware>();
-
-    app.MapControllers();
-}
-
-// create hardcoded test users in db on startup
-// {
-//     var testUsers = new List<User>
-//     {
-//         new User { Id = 1, FirstName = "Admin", LastName = "User", Username = "admin", PasswordHash = BCryptNet.HashPassword("1111"), Role = Role.Admin },
-//         new User { Id = 2, FirstName = "Normal", LastName = "User", Username = "user", PasswordHash = BCryptNet.HashPassword("1111"), Role = Role.User }
-//     };
-// 
-//     using var scope = app.Services.CreateScope();
-//     var dataContext = scope.ServiceProvider.GetRequiredService<UserPostgreSqlContext>();
-//     dataContext.Users.AddRange(testUsers);
-//     dataContext.SaveChanges();
-// }
-
-app.Run();

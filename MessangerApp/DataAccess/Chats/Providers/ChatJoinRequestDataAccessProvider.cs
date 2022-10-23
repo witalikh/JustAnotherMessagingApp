@@ -1,33 +1,33 @@
-using MessangerApp.Models.Chats;
+using MessangerApp.Entities.Chats;
 using MessangerApp.DataAccess.Chats.Interfaces;
-using MessangerApp.DataAccess.Chats.Contexts;
+using MessangerApp.DataAccess.Contexts;
 
 namespace MessangerApp.DataAccess.Chats.Providers;
 
 public class ChatJoinRequestDataAccessProvider : IChatJoinRequestDataAccessProvider
 {
-    private readonly ChatJoinRequestPostgreSqlContext _context;
+    private readonly PostgreSqlContext _context;
 
-    public ChatJoinRequestDataAccessProvider(ChatJoinRequestPostgreSqlContext context)
+    public ChatJoinRequestDataAccessProvider(PostgreSqlContext context)
     {
         _context = context;
     }
 
-    public void AddChatJoinRequestRecord(ChatJoinRequest ChatJoinRequest)
+    public void AddChatJoinRequestRecord(ChatJoinRequest chatJoinRequest)
     {
-        _context.ChatJoinRequests.Add(ChatJoinRequest);
+        _context.ChatJoinRequests.Add(chatJoinRequest);
         _context.SaveChanges();
     }
 
-    public void AddRange(List<ChatJoinRequest> ChatJoinRequests)
+    public void AddRange(List<ChatJoinRequest> chatJoinRequests)
     {
-        _context.ChatJoinRequests.AddRange(ChatJoinRequests);
+        _context.ChatJoinRequests.AddRange(chatJoinRequests);
         _context.SaveChanges();
     }
 
-    public void UpdateChatJoinRequestRecord(ChatJoinRequest ChatJoinRequest)
+    public void UpdateChatJoinRequestRecord(ChatJoinRequest chatJoinRequest)
     {
-        _context.ChatJoinRequests.Update(ChatJoinRequest);
+        _context.ChatJoinRequests.Update(chatJoinRequest);
         _context.SaveChanges();
     }
 

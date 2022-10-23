@@ -1,50 +1,50 @@
-using MessangerApp.Models.Chats;
+using MessangerApp.Entities.Chats;
 using MessangerApp.DataAccess.Chats.Interfaces;
-using MessangerApp.DataAccess.Chats.Contexts;
+using MessangerApp.DataAccess.Contexts;
 
 namespace MessangerApp.DataAccess.Chats.Providers;
 
-public class ChatBlackListDataAccessProvider : IChatBlackListDataAccessProvider
+public class ChatBlacklistDataAccessProvider : IChatBlacklistDataAccessProvider
 {
-    private readonly ChatBlackListPostgreSqlContext _context;
+    private readonly PostgreSqlContext _context;
 
-    public ChatBlackListDataAccessProvider(ChatBlackListPostgreSqlContext context)
+    public ChatBlacklistDataAccessProvider(PostgreSqlContext context)
     {
         _context = context;
     }
 
-    public void AddChatBlackListRecord(ChatBlackList ChatBlackList)
+    public void AddChatBlacklistRecord(ChatBlacklist chatBlackList)
     {
-        _context.ChatBlackLists.Add(ChatBlackList);
+        _context.ChatBlacklists.Add(chatBlackList);
         _context.SaveChanges();
     }
 
-    public void AddRange(List<ChatBlackList> ChatBlackLists)
+    public void AddRange(List<ChatBlacklist> chatBlackLists)
     {
-        _context.ChatBlackLists.AddRange(ChatBlackLists);
+        _context.ChatBlacklists.AddRange(chatBlackLists);
         _context.SaveChanges();
     }
 
-    public void UpdateChatBlackListRecord(ChatBlackList ChatBlackList)
+    public void UpdateChatBlacklistRecord(ChatBlacklist chatBlackList)
     {
-        _context.ChatBlackLists.Update(ChatBlackList);
+        _context.ChatBlacklists.Update(chatBlackList);
         _context.SaveChanges();
     }
 
-    public void DeleteChatBlackListRecord(int id)
+    public void DeleteChatBlacklistRecord(int id)
     {
-        var entity = _context.ChatBlackLists.FirstOrDefault(t => t.Id == id);
-        _context.ChatBlackLists.Remove(entity!);
+        var entity = _context.ChatBlacklists.FirstOrDefault(t => t.Id == id);
+        _context.ChatBlacklists.Remove(entity!);
         _context.SaveChanges();
     }
 
-    public ChatBlackList GetChatBlackListSingleRecord(int id)
+    public ChatBlacklist GetChatBlacklistSingleRecord(int id)
     {
-        return _context.ChatBlackLists.FirstOrDefault(t => t.Id == id);
+        return _context.ChatBlacklists.FirstOrDefault(t => t.Id == id);
     }
 
-    public List<ChatBlackList> GetChatBlackListRecords()
+    public List<ChatBlacklist> GetChatBlacklistRecords()
     {
-        return _context.ChatBlackLists.ToList();
+        return _context.ChatBlacklists.ToList();
     }
 }

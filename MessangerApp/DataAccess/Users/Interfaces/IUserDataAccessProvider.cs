@@ -1,6 +1,7 @@
-namespace MessangerApp.DataAccess.Users;
-
 using MessangerApp.Models.Users;
+using MessangerApp.Entities.Users;
+
+namespace MessangerApp.DataAccess.Users.Interfaces;
 
 public interface IUserDataAccessProvider
 {

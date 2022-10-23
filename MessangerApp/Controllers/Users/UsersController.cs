@@ -3,14 +3,11 @@ namespace MessangerApp.Controllers.Users;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using MessangerApp.Authorization;
-using MessangerApp.Helpers.Users;
 
+using MessangerApp.Helpers.Authorization;
+using MessangerApp.Helpers.Common;
 using MessangerApp.Models.Users;
-using MessangerApp.Models.BlackListedTokens;
-
-using MessangerApp.DataAccess.Users;
-using MessangerApp.DataAccess.BlackListedTokens;
+using MessangerApp.DataAccess.Users.Interfaces;
 
 [Authorize]
 [ApiController]
@@ -18,18 +15,15 @@ using MessangerApp.DataAccess.BlackListedTokens;
 public class UsersController : ControllerBase
 {
     private IUserDataAccessProvider _userService;
-    private IBlackListedTokenService _blackListedTokenService;
     private IMapper _mapper;
     private readonly AppSettings _appSettings;
 
     public UsersController(
         IUserDataAccessProvider userService,
-        IBlackListedTokenService blackListedTokenService,
         IMapper mapper,
         IOptions<AppSettings> appSettings)
     {
         _userService = userService;
-        _blackListedTokenService = blackListedTokenService;
         _mapper = mapper;
         _appSettings = appSettings.Value;
     }
@@ -40,15 +34,6 @@ public class UsersController : ControllerBase
     {
         var response = _userService.Authenticate(model);
         return Ok(response);
-    }
-
-    [HttpPost("logout")]
-    public IActionResult Logout()
-    {
-        var tokenToBlackList = new BlackListedToken();
-        tokenToBlackList.Token = Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        _blackListedTokenService.InvalidateToken(tokenToBlackList);
-        return Unauthorized(tokenToBlackList);
     }
 
     [AllowAnonymous]

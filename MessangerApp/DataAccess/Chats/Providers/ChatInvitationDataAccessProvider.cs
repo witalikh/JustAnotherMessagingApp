@@ -1,33 +1,33 @@
-using MessangerApp.Models.Chats;
+using MessangerApp.Entities.Chats;
 using MessangerApp.DataAccess.Chats.Interfaces;
-using MessangerApp.DataAccess.Chats.Contexts;
+using MessangerApp.DataAccess.Contexts;
 
 namespace MessangerApp.DataAccess.Chats.Providers;
 
 public class ChatInvitationDataAccessProvider : IChatInvitationDataAccessProvider
 {
-    private readonly ChatInvitationPostgreSqlContext _context;
+    private readonly PostgreSqlContext _context;
 
-    public ChatInvitationDataAccessProvider(ChatInvitationPostgreSqlContext context)
+    public ChatInvitationDataAccessProvider(PostgreSqlContext context)
     {
         _context = context;
     }
 
-    public void AddChatInvitationRecord(ChatInvitation ChatInvitation)
+    public void AddChatInvitationRecord(ChatInvitation chatInvitation)
     {
-        _context.ChatInvitations.Add(ChatInvitation);
+        _context.ChatInvitations.Add(chatInvitation);
         _context.SaveChanges();
     }
 
-    public void AddRange(List<ChatInvitation> ChatInvitations)
+    public void AddRange(List<ChatInvitation> chatInvitations)
     {
-        _context.ChatInvitations.AddRange(ChatInvitations);
+        _context.ChatInvitations.AddRange(chatInvitations);
         _context.SaveChanges();
     }
 
-    public void UpdateChatInvitationRecord(ChatInvitation ChatInvitation)
+    public void UpdateChatInvitationRecord(ChatInvitation chatInvitation)
     {
-        _context.ChatInvitations.Update(ChatInvitation);
+        _context.ChatInvitations.Update(chatInvitation);
         _context.SaveChanges();
     }
 

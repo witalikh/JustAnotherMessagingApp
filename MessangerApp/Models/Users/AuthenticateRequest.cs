@@ -1,6 +1,6 @@
-namespace MessangerApp.Models.Users;
-
 using System.ComponentModel.DataAnnotations;
+
+namespace MessangerApp.Models.Users;
 
 public class AuthenticateRequest
 {

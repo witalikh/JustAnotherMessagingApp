@@ -1,50 +1,50 @@
-using MessangerApp.Models.Users;
+using MessangerApp.Entities.Users;
 using MessangerApp.DataAccess.Users.Interfaces;
-using MessangerApp.DataAccess.Users.Contexts;
+using MessangerApp.DataAccess.Contexts;
 
 namespace MessangerApp.DataAccess.Users.Providers;
 
-public class UserBlackListDataAccessProvider : IUserBlackListDataAccessProvider
+public class UserBlacklistDataAccessProvider : IUserBlacklistDataAccessProvider
 {
-    private readonly UserBlackListPostgreSqlContext _context;
+    private readonly PostgreSqlContext _context;
 
-    public UserBlackListDataAccessProvider(UserBlackListPostgreSqlContext context)
+    public UserBlacklistDataAccessProvider(PostgreSqlContext context)
     {
         _context = context;
     }
 
-    public void AddUserBlackListRecord(UserBlackList UserBlackList)
+    public void AddUserBlacklistRecord(UserBlacklist UserBlacklist)
     {
-        _context.UserBlackLists.Add(UserBlackList);
+        _context.UserBlacklists.Add(UserBlacklist);
         _context.SaveChanges();
     }
 
-    public void AddRange(List<UserBlackList> UserBlackLists)
+    public void AddRange(List<UserBlacklist> UserBlacklists)
     {
-        _context.UserBlackLists.AddRange(UserBlackLists);
+        _context.UserBlacklists.AddRange(UserBlacklists);
         _context.SaveChanges();
     }
 
-    public void UpdateUserBlackListRecord(UserBlackList UserBlackList)
+    public void UpdateUserBlacklistRecord(UserBlacklist UserBlacklist)
     {
-        _context.UserBlackLists.Update(UserBlackList);
+        _context.UserBlacklists.Update(UserBlacklist);
         _context.SaveChanges();
     }
 
-    public void DeleteUserBlackListRecord(int id)
+    public void DeleteUserBlacklistRecord(int id)
     {
-        var entity = _context.UserBlackLists.FirstOrDefault(t => t.Id == id);
-        _context.UserBlackLists.Remove(entity!);
+        var entity = _context.UserBlacklists.FirstOrDefault(t => t.Id == id);
+        _context.UserBlacklists.Remove(entity!);
         _context.SaveChanges();
     }
 
-    public UserBlackList GetUserBlackListSingleRecord(int id)
+    public UserBlacklist GetUserBlacklistSingleRecord(int id)
     {
-        return _context.UserBlackLists.FirstOrDefault(t => t.Id == id);
+        return _context.UserBlacklists.FirstOrDefault(t => t.Id == id);
     }
 
-    public List<UserBlackList> GetUserBlackListRecords()
+    public List<UserBlacklist> GetUserBlacklistRecords()
     {
-        return _context.UserBlackLists.ToList();
+        return _context.UserBlacklists.ToList();
     }
 }

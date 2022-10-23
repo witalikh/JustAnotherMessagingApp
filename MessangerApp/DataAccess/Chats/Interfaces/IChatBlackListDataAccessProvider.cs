@@ -1,13 +1,13 @@
-using MessangerApp.Models.Chats;
+using MessangerApp.Entities.Chats;
 
 namespace MessangerApp.DataAccess.Chats.Interfaces;
 
-public interface IChatBlackListDataAccessProvider
+public interface IChatBlacklistDataAccessProvider
 {
-    void AddChatBlackListRecord(ChatBlackList chatBlackList);
-    void AddRange(List<ChatBlackList> chatBlackLists);
-    void UpdateChatBlackListRecord(ChatBlackList chatBlackList);
-    void DeleteChatBlackListRecord(int id);
-    ChatBlackList GetChatBlackListSingleRecord(int id);
-    List<ChatBlackList> GetChatBlackListRecords();
+    void AddChatBlacklistRecord(ChatBlacklist chatBlackList);
+    void AddRange(List<ChatBlacklist> chatBlackLists);
+    void UpdateChatBlacklistRecord(ChatBlacklist chatBlackList);
+    void DeleteChatBlacklistRecord(int id);
+    ChatBlacklist GetChatBlacklistSingleRecord(int id);
+    List<ChatBlacklist> GetChatBlacklistRecords();
 }

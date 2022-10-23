@@ -1,19 +1,23 @@
-namespace MessangerApp.DataAccess.Users;
-
+using BCryptNet = BCrypt.Net;
 using AutoMapper;
-using BCrypt.Net;
-using MessangerApp.Authorization;
+
+using MessangerApp.Helpers.Authorization;
 using MessangerApp.Models.Users;
-using MessangerApp.Helpers.Users;
+using MessangerApp.Helpers.Common;
+using MessangerApp.Entities.Users;
+using MessangerApp.DataAccess.Users.Interfaces;
+using MessangerApp.DataAccess.Contexts;
+
+namespace MessangerApp.DataAccess.Users.Providers;
 
 public class UserDataAccessProvider : IUserDataAccessProvider
 {
-    private UserPostgreSqlContext _context;
+    private PostgreSqlContext _context;
     private IJwtUtils _jwtUtils;
     private readonly IMapper _mapper;
 
     public UserDataAccessProvider(
-        UserPostgreSqlContext context,
+        PostgreSqlContext context,
         IJwtUtils jwtUtils,
         IMapper mapper)
     {
@@ -27,7 +31,7 @@ public class UserDataAccessProvider : IUserDataAccessProvider
         var user = _context.Users.SingleOrDefault(x => x.Username == model.Username);
 
         // validate
-        if (user == null || !BCrypt.Verify(model.Password, user.PasswordHash))
+        if (user == null || !BCryptNet.BCrypt.Verify(model.Password, user.PasswordHash))
             throw new AppException("Username or password is incorrect");
 
         // authentication successful
@@ -38,7 +42,7 @@ public class UserDataAccessProvider : IUserDataAccessProvider
 
     public IEnumerable<User> GetAll()
     {
-        return _context.Users;
+        return _context.Users.ToList();
     }
 
     public User GetById(int id)
@@ -56,7 +60,7 @@ public class UserDataAccessProvider : IUserDataAccessProvider
         var user = _mapper.Map<User>(model);
 
         // hash password
-        user.PasswordHash = BCrypt.HashPassword(model.Password);
+        user.PasswordHash = BCryptNet.BCrypt.HashPassword(model.Password);
 
         // save user
         _context.Users.Add(user);
@@ -73,7 +77,7 @@ public class UserDataAccessProvider : IUserDataAccessProvider
 
         // hash password if it was entered
         if (!string.IsNullOrEmpty(model.Password))
-            user.PasswordHash = BCrypt.HashPassword(model.Password);
+            user.PasswordHash = BCryptNet.BCrypt.HashPassword(model.Password);
 
         // copy model to user and save
         _mapper.Map(model, user);

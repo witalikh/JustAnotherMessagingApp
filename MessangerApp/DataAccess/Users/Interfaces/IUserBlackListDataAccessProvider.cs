@@ -1,13 +1,13 @@
-using MessangerApp.Models.Users;
+using MessangerApp.Entities.Users;
 
 namespace MessangerApp.DataAccess.Users.Interfaces;
 
-public interface IUserBlackListDataAccessProvider
+public interface IUserBlacklistDataAccessProvider
 {
-    void AddUserBlackListRecord(UserBlackList userBlackList);
-    void AddRange(List<UserBlackList> userBlackLists);
-    void UpdateUserBlackListRecord(UserBlackList userBlackList);
-    void DeleteUserBlackListRecord(int id);
-    UserBlackList GetUserBlackListSingleRecord(int id);
-    List<UserBlackList> GetUserBlackListRecords();
+    void AddUserBlacklistRecord(UserBlacklist userBlackList);
+    void AddRange(List<UserBlacklist> userBlackLists);
+    void UpdateUserBlacklistRecord(UserBlacklist userBlackList);
+    void DeleteUserBlacklistRecord(int id);
+    UserBlacklist GetUserBlacklistSingleRecord(int id);
+    List<UserBlacklist> GetUserBlacklistRecords();
 }

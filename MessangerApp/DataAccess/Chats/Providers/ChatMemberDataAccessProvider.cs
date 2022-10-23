@@ -1,33 +1,33 @@
-using MessangerApp.Models.Chats;
+using MessangerApp.Entities.Chats;
 using MessangerApp.DataAccess.Chats.Interfaces;
-using MessangerApp.DataAccess.Chats.Contexts;
+using MessangerApp.DataAccess.Contexts;
 
 namespace MessangerApp.DataAccess.Chats.Providers;
 
 public class ChatMemberDataAccessProvider : IChatMemberDataAccessProvider
 {
-    private readonly ChatMemberPostgreSqlContext _context;
+    private readonly PostgreSqlContext _context;
 
-    public ChatMemberDataAccessProvider(ChatMemberPostgreSqlContext context)
+    public ChatMemberDataAccessProvider(PostgreSqlContext context)
     {
         _context = context;
     }
 
-    public void AddChatMemberRecord(ChatMember ChatMember)
+    public void AddChatMemberRecord(ChatMember chatMember)
     {
-        _context.ChatMembers.Add(ChatMember);
+        _context.ChatMembers.Add(chatMember);
         _context.SaveChanges();
     }
 
-    public void AddRange(List<ChatMember> ChatMembers)
+    public void AddRange(List<ChatMember> chatMembers)
     {
-        _context.ChatMembers.AddRange(ChatMembers);
+        _context.ChatMembers.AddRange(chatMembers);
         _context.SaveChanges();
     }
 
-    public void UpdateChatMemberRecord(ChatMember ChatMember)
+    public void UpdateChatMemberRecord(ChatMember chatMember)
     {
-        _context.ChatMembers.Update(ChatMember);
+        _context.ChatMembers.Update(chatMember);
         _context.SaveChanges();
     }
 
