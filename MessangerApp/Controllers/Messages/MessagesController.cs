@@ -16,11 +16,11 @@ public class MessagesCotroller : ControllerBase
     private readonly AppSettings _appSettings;
 
     public MessagesCotroller(
-        IMessageDataAccessProvider userService,
+        IMessageDataAccessProvider messageService,
         IMapper mapper,
         IOptions<AppSettings> appSettings)
     {
-        _messageService = userService;
+        _messageService = messageService;
         _mapper = mapper;
         _appSettings = appSettings.Value;
     }
