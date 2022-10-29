@@ -1,0 +1,32 @@
+<html>
+	<head>
+		<title>Web Clock</title>
+	</head>
+	<body>
+
+		<h3 id="time-area">Current Time</h3>
+		<button id="get-time">Request time</button>
+
+		<p>Click the button to get the current time</p>
+
+		<script>
+			const socket = new WebSocket('wss://localhost:7106/messages/list');
+
+			socket.onmessage = function(e) {
+				/* const currentTime = JSON.parse(e.data).current_time;
+				console.log("message", e);
+				document.getElementById("time-area").innerHTML = currentTime; */
+			};
+			socket.onopen = function(e) {
+				console.log("open", e);
+			};
+			socket.onerror = function(e) {
+				console.log("error", e);
+			};
+			socket.onclose = function(e) {
+				console.log("close", e);
+			};
+		</script>
+
+	</body>
+</html>

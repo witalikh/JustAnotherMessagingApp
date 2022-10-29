@@ -29,6 +29,8 @@ public class App
 	{
 		if (args.Any(s => "migrate".Contains(s)))
 			MigrateDB();
+		if (args.Any(s => "createfakedata".Contains(s)))
+			CreateFakeData();
 	}
 
 	public void Run()
@@ -47,7 +49,7 @@ public class App
 		_builder.Services.AddAutoMapper(typeof(Program));
 		_builder.Services.Configure<AppSettings>(_builder.Configuration.GetSection("AppSettings"));
 
-		AddContexts();
+		AddServices();
 	}
 
 	public void ConfigureApp()
@@ -78,9 +80,16 @@ public class App
 		// custom jwt auth middleware
 		_app.UseMiddleware<JwtMiddleware>();
 		_app.MapControllers();
+
+		var webSocketOptions = new WebSocketOptions {
+			KeepAliveInterval = TimeSpan.FromSeconds(10)
+		};
+		_app.UseWebSockets(webSocketOptions);
+
+		AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 	}
 
-	public void AddContexts()
+	public void AddServices()
 	{
 		_builder.Services.AddDbContext<DA.Contexts.PostgreSqlContext>(
 			options => options.UseNpgsql(_builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -88,7 +97,10 @@ public class App
 		_builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 
 		// User providers
-		_builder.Services.AddScoped<DA.Users.Interfaces.IUserDataAccessProvider, DA.Users.Providers.UserDataAccessProvider>();
+		_builder.Services.AddScoped<
+			DA.Users.Interfaces.IUserDataAccessProvider,
+			DA.Users.Providers.UserDataAccessProvider>();
+
 		_builder.Services.AddScoped<
 			DA.Users.Interfaces.IUserBlacklistDataAccessProvider,
 			DA.Users.Providers.UserBlacklistDataAccessProvider>();
@@ -136,29 +148,12 @@ public class App
 			var postgreSqlContext = localScope.ServiceProvider.GetRequiredService<DA.Contexts.PostgreSqlContext>();
 			postgreSqlContext.Database.Migrate();
 		}
+	}
 
-		// create hardcoded test users in db on startup
-		/* var testUsers = new List<User>
-		{
-			new User {
-				Id = 1,
-				FirstName = "Admin",
-				LastName = "User",
-				Username = "admin",
-				PasswordHash = BCryptNet.BCrypt.HashPassword("1111")
-			},
-			new User {
-				Id = 2,
-				FirstName = "Normal",
-				LastName = "User",
-				Username = "user",
-				PasswordHash = BCryptNet.BCrypt.HashPassword("1111")
-			}
-		};
-
-		using var scope = _app.Services.CreateScope();
-		var dataContext = scope.ServiceProvider.GetRequiredService<DA.Users.Contexts.UserPostgreSqlContext>();
-		dataContext.Users.AddRange(testUsers);
-		dataContext.SaveChanges(); */
+	public void CreateFakeData()
+	{
+		var localScope = _app.Services.CreateScope();
+		var faker = new FakeDataGenerator(localScope);
+		faker.GenerateFakeData(50);
 	}
 }
